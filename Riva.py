@@ -7,8 +7,7 @@ import os
 # pyttsx
 engine = pyttsx3.init("sapi5")
 voices = engine.getProperty("voices")
-
-engine.setProperty('voice', voices[1].id)  # 1 for female and 0 for male voice.
+engine.setProperty('voice', voices[1].id)  # 1 for female voice, 0 for male voice
 
 def speak(audio):
     engine.say(audio)
@@ -23,9 +22,9 @@ def take_command():
     try:
         print("Recognizing...")
         query = r.recognize_google(audio, language='en-in')
-        print("User said:" + query + "\n")
+        print("User said: " + query + "\n")
     except Exception as e:
-        print(e)
-        speak("I didnt understand")
+        print("Error: ", e)
+        speak("I didn't understand. Please say that again.")
         return "None"
     return query
