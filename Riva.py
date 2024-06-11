@@ -7,7 +7,12 @@ import os
 # Initialize pyttsx3
 engine = pyttsx3.init("sapi5")
 voices = engine.getProperty("voices")
-engine.setProperty('voice', voices[1].id)  # 1 for female voice, 0 for male voice
+
+# voice
+if len(voices) > 1:
+    engine.setProperty('voice', voices[1].id)  # 1 for female voice, 0 for male voice
+else:
+    engine.setProperty('voice', voices[0].id)  # Default to the first voice if only one is available
 
 def speak(audio):
     engine.say(audio)
@@ -22,12 +27,15 @@ def take_command():
     try:
         print("Recognizing...")
         query = r.recognize_google(audio, language='en-in')
-        print("User said: " + query + "\n")
-    except Exception as e:
-        print("Error: ", e)
+        print(f"User said: {query}\n")
+    except sr.UnknownValueError:
         speak("I didn't understand. Please say that again.")
         return "None"
-    return query
+    except sr.RequestError as e:
+        speak("There was an error with the speech recognition service. Please try again.")
+        print(f"Request error: {e}")
+        return "None"
+    return query.lower()
 
 def search_wikipedia(query):
     speak("Searching Wikipedia...")
@@ -38,11 +46,12 @@ def search_wikipedia(query):
         speak(results)
     except wikipedia.exceptions.DisambiguationError as e:
         speak("There are multiple results for your query. Please be more specific.")
+        print(f"Disambiguation error: {e}")
     except wikipedia.exceptions.PageError:
         speak("Sorry, I couldn't find any results for your query.")
     except Exception as e:
         speak("An error occurred while searching Wikipedia.")
-        print("Wikipedia error: ", e)
+        print(f"Wikipedia error: {e}")
 
 def open_website(url):
     speak(f"Opening {url}")
@@ -93,6 +102,6 @@ if __name__ == '__main__':
     speak("Riva assistance activated")
     speak("How can I help you?")
     while True:
-        query = take_command().lower()
+        query = take_command()
         if query != "None":
             execute_command(query)
