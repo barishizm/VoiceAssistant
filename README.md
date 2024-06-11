@@ -22,8 +22,8 @@ Riva is a simple voice assistant built using Python. It can perform various task
 1. **Clone the Repository:**
 
     ```bash
-    git clone https://github.com/yourusername/riva-voice-assistant.git
-    cd riva-voice-assistant
+    git clone https://github.com/barishizm/VoiceAssistant.git
+    cd VoiceAssistant
     ```
 
 2. **Create a Virtual Environment:**
@@ -49,7 +49,8 @@ Riva is a simple voice assistant built using Python. It can perform various task
 4. **Install Required Packages:**
 
     ```bash
-    pip install -r requirements.txt
+    pip install setuptools
+    pip install pyttsx3 SpeechRecognition wikipedia pywin32 pyaudio
     ```
 
 ### Additional Setup for `PyAudio`
